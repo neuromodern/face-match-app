@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Face Match APP👥. Face comparison tool. Check photo simmillarity online.</title>
+    <meta name="viewport" content="width=800, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="description" content="A brief description of your website for search engines.">
+    <meta name="keywords" content="">
+    <meta name="author" content="Neuromodern">
+	  
+	  
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+      <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+
+
+      <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+      <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+      <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+      <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+      <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+      <link rel="manifest" href="/manifest.json">
+
+
+      <script src="app/html2canvas.min.js"></script>
+      <script src="app/materialize.min.js"></script>
+      <script src="app/face-api.js"></script>
+      <script src="app/minFaceMatchApp.js">
+
+      <link rel="stylesheet" href="css/archetype.css">
+      <link rel="stylesheet" href="css/styles.css">
+      <link rel="stylesheet" href="css/materialize.min.css">
+
+
+
+
+      <style>
+         
+         
+         #loader {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #000000;
+            z-index: 400;
+            owerflow: hidden;
+         }
+         
+         #loaderText{
+position: absolute;
+top: 50vh;
+left: 50vw;
+width: 30vmin;
+height: 5vmin;
+color: #FFFFFF;
+size: 50px;
+margin-left: -15vmin;
+text-align: center;
+margin-top: 10vmin;
+font-size: 1.5vmin;
+font-weight: 800;
+         }
+
+         #loaderImage{
+            position: absolute;
+            top: 50vh;
+            left: 50vw;
+            width: 300px;
+            height: 300px;
+            margin-left:-150px;
+            margin-top:-150px;
+         }
+         
+         .loaderStyle,
+         .loaderStyle2 {
+            display: inline-block;
+            position: absolute;
+            top: 50vh;
+            left: 50vw;
+         }
+         
+         
+         .loaderStyle {
+            width: vminpx;
+            height: vminpx;
+            margin-top: -40vmin;
+            margin-left: -40vmin;
+            z-index: 401
+         }
+         
+         .loaderStyle:after {
+            content: " ";
+            display: block;
+            width: 64vmin;
+            height: 64vmin;
+            margin: 8vmin;
+            border-radius: 50%;
+            border: 0.8vmin solid #fff;
+            border-color: #fff transparent;
+            animation: 1.2s linear infinite loaderStyle
+         }
+         
+         .loaderStyle2 {
+            width: 60vmin;
+            height: 60vmin;
+            margin-top: -30vmin;
+            margin-left: -30vmin;
+            z-index: 402
+         }
+         
+         .loaderStyle2:after {
+            content: " ";
+            display: block;
+            width: 52vmin;
+            height: 52vmin;
+            margin: 4vmin;
+            border-radius: 50%;
+            border: 0.8vmin solid #fff;
+            border-color: #fff transparent;
+            animation: 1.2s linear infinite loaderStyle2
+         }
+         
+         .loaderStyle2:after,
+         .loaderStyle:after {
+            box-shadow: inset 0 0 2px #ffe9e9, 0 0 2px #ffe9e9
+         }
+         
+         @keyframes loaderStyle {
+            0% {
+               transform: rotate(0)
+            }
+         
+            100% {
+               transform: rotate(360deg)
+            }
+         }
+         
+         @keyframes loaderStyle2 {
+            0% {
+               transform: rotate(0)
+            }
+         
+            100% {
+               transform: rotate(720deg)
+            }
+         }
+         
+       
+  #loaderImage {
+	position: absolute;
+	top: 50vh;
+	left: 50vw;
+	animation: jump-and-fall 3s ease-in-out;
+	animation-iteration-count: infinite;
+	margin-left: -10vmin;
+	margin-top: -10vmin;
+	width: 20vmin;
+	height: 20vmin;
+   background-image: url('android-icon-192x192.png');
+   background-size: cover;
+}
+@keyframes jump-and-fall{0%,100%,40%,60%{transform:translate3d(0,0,0) rotate3d(0,0,0,0)}20%{transform:translate3d(0,0,0) rotate3d(0,1,0,0)}30%{transform:translate3d(0,-20px,0) rotate3d(0,0,0,0)}50%{transform:translate3d(0,-7px,0) rotate3d(0,0,0,0)}70%{transform:translate3d(0,5px,0) rotate3d(1,1,-.1,90deg)}90%{transform:translate3d(0,-5px,0) rotate3d(-1,1,.1,90deg)}}
+
+@keyframes jump-and-fall2{10%,30%{transform:rotate3d(0,0,0,0)}20%{transform:rotate3d(0,0,45deg,0)}}@keyframes jump-and-fall{0%,100%,40%,60%{transform:translate3d(0,0,0) rotate3d(0,0,0,0)}20%{transform:translate3d(0,0,0) rotate3d(0,1,0,0)}30%{transform:translate3d(0,-20px,0) rotate3d(0,0,0,0)}50%{transform:translate3d(0,-7px,0) rotate3d(0,0,0,0)}70%{transform:translate3d(0,5px,0) rotate3d(1,1,-.1,90deg)}90%{transform:translate3d(0,-5px,0) rotate3d(-1,1,.1,90deg)}}
+         
+         
+
+         
+         </style>
+         
+
+
+
+   </head>
+   <body>
+
+
+
+
+
+
+
+
+      <div class="" id="pageContent" style="display: none; width: 700px; min-width: 700px; margin: auto;">
+         <h1 style="font-size: 33px; margin-top: 50px; margin-bottom: 70px;">👥 Face Match App: AI Face Comparison Tool</h1>
+         <div id="faceBlock">
+            <div class="row side-by-side">
+               <div class="center-content" style="margin: 0 25px;">
+                  <div class="uploadingImageBox" style="border: 2px solid white;">
+                     <img id="uploadedImage1" src=""  class="uploadedImageIMG" style="display: none;">
+                     <canvas id="cropedImage1" width="300" height="300" style="">
+                  </div>
+                  <div class="uploadFormInput" style="margin-top: 20px; border: 2px solid white;">
+                     <input type="file"  id="uploadForm1" hidden>
+                     <label for="uploadForm1">
+                        <a class="waves-effect waves-light btn-large blue lighten-2" > 
+                           <img src="css/upload_ico.png" style="height: 50px; vertical-align: bottom;">
+                           Face 1
+                  </a>
+               </label>
+                  </div>
+               </div>
+
+               <div class="center-content"  style="margin: 0 25px;">
+                  <div class="uploadingImageBox" style="border: 2px solid white;">
+                     <img id="uploadedImage2" src="" class="uploadedImageIMG" style="display: none;">
+                     <canvas id="cropedImage2" width="300" height="300" style="">
+
+                  </div>
+                  <div class="uploadFormInput" style="margin-top: 20px; border: 2px solid white;">
+                     <input type='file'  id="uploadForm2" hidden>
+                     <label for="uploadForm2">
+                        <a class="waves-effect waves-light btn-large blue lighten-2">
+                           <img src="css/upload_ico.png" style="height: 50px; vertical-align: bottom;">
+                           Face 2
+                     </a></label>
+                  </div>
+               </div>
+            </div>
+
+            <div>
+             <p>
+               Face Match App is an AI-powered facial comparison tool that analyzes similarity, age, gender, and detailed vector differences between two faces. App can use in criminology, forensic analysis, cosmetic and plastic surgery (highlighting face parts), identity verification, age progression studies, sculpting and 3d modeling (for check precision), security systems, model casting, deepfake detection, and genealogy research. With interactive visuals, graph analytics, and precise similarity scoring, it’s a versatile tool for anyone working with facial data.
+             </p>  
+            </div>
+			
+
+			
+            <div style="display:none">
+               <div class="row">
+                  <input value="0.03" id="treshhold" type="text" class="bold">
+               </div>
+               <div class="row">
+                  <input value="0.05" id="treshholdForImages" type="text" class="bold">
+               </div>
+            </div>
+         </div>
+         <h3>Result</h3>
+		 
+		    <div class="row">
+			
+			<div style="display:none">
+               <label for="distance">Distance:</label>
+               <input disabled value="" id="distance" type="text" class="bold">
+             </div>			   
+			   
+			   
+			    <div id="distanceText">Similarity: 0% (The actual vector distance between faces is <b>0.0</b><sup><b>*</b></sup>)</div>
+             <div id="distanceAgeText"></div>
+
+            
+             <div id="distanceHelp"><b><sup>*</sup></b> -       
+               The <b>vector distance</b> reflects how close the two images are in a mathematical sense. 
+               A distance between 0 and 0.6 typically indicates the same person. 
+               The percentage value is calibrated to better represent human perception of similarity.
+            
+            </div>
+            </div>
+		 
+
+		 
+		 
+		 
+         <div class="row">
+            <div style="position: relative; width:100%; height:300px; display:block; margin: auto; background-color: #797979; ">
+            <div style="position: relative; width:225px; margin: auto;">
+
+
+               <img src="css/face.png" style="position:absolute;">
+               <img src="css/face_lighter_lips.png" style="position:absolute; opacity: 0.0;" id="lighterLips">
+               <img src="css/face_lighter_ch.png" style="position:absolute; opacity: 0.0;" id="lighterCh">
+               <img src="css/face_lighter_nose.png" style="position:absolute; opacity: 0.0;" id="lighterNose">
+               <img src="css/face_lighter_eyes.png" style="position:absolute; opacity: 0.0;" id="lighterEyes">
+               <img src="css/face_lighter_ears.png" style="position:absolute; opacity: 0.0;" id="lighterEars">
+
+            </div>
+            </div>
+			
+		   <h3>Face higlight treshhold: </h3>
+	   	<p>Move coursor for make highlight more or less bright</p>
+         <div class="range-field">
+            <input 
+            onchange="if (descriptors['desc1']!==null && descriptors['desc2']!==null) updateResult(); return false;" 
+            oninput="if (descriptors['desc1']!==null && descriptors['desc2']!==null) updateResult(); return false;" 
+            
+            
+            type="range" id="treshholdForMap" min="0" max="100" />
+         </div>		
+			
+			
+         </div>
+		 
+		 <div class="row" >
+		 The Graph 1 and Graph 2 display the vector values for Face 1 and Face 2.<br/>
+The Graph 3 shows the blended vectors for Face 1 and Face 2.<br/>
+The Graph 4 shows the differences between the vectors of Face 1 and Face 2.<br/> 
+The Graph 3 graph presents the absolute differences between the vectors (without values less than 0).
+		 </div>	
+
+		 
+         <div class="row" style="text-align: center; position: relative;">
+
+
+	 <div style="position: absolute; top: 20px; width: 300px; height: 30px; text-align: left;">Face 1</div>
+	 <div style="position: absolute; top: 120px; width: 300px; height: 30px; text-align: left;">Face 2</div>
+	 <div style="position: absolute; top: 220px; width: 300px; height: 30px; text-align: left;">Face 1 and Face 2</div>
+	 <div style="position: absolute; top: 320px; width: 300px; height: 30px; text-align: left;">Differences</div>
+	 <div style="position: absolute; top: 420px; width: 300px; height: 30px; text-align: left;">Differences in absolute value</div>
+	 <div style="position: absolute; top: 520px; width: 300px; height: 30px; text-align: left;">Face1, Face1 on Face2, Face2 polar diagram</div>
+	 <div style="position: absolute; top: 720px; width: 300px; height: 30px; text-align: left;">Difference on polar diagram</div>
+	 
+	 
+	 
+         <canvas id="canvasUI" width="640" height="900" border="1" style="margin: auto;"></canvas>
+		 <a id="saveResultButton" class="waves-effect waves-light btn-large blue lighten-2">Save Results</a>
+
+         </div>
+          
+
+		  
+
+      </div>
+
+<div id="loader">
+         <div class="" id="loaderText" style="">Loading an App and neural models...</div>
+         <div id="loaderImage"></div>
+         <div class="loaderStyle" id="loader1"></div>
+         <div class="loaderStyle2" id="loader2"></div>
+</div> 
+
+
+   </body>
+</html>
